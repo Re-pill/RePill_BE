@@ -35,4 +35,22 @@ public class Medicine {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medicine_type_id", nullable = false)
     private MedicineType medicineType;
+
+    private Medicine(Member member, String name, Integer count, LocalDate expirationDate, MedicineType medicineType) {
+        this.member = member;
+        this.name = name;
+        this.count = count;
+        this.expirationDate = expirationDate;
+        this.medicineType = medicineType;
+    }
+
+    public static Medicine create(Member member, String name, Integer count, LocalDate expirationDate, MedicineType medicineType) {
+        return new Medicine(
+                member,
+                name,
+                count,
+                expirationDate,
+                medicineType
+        );
+    }
 }
