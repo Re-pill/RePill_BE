@@ -28,7 +28,8 @@ public class Member extends BaseEntity {
     private Integer level;
 
     @Enumerated(EnumType.STRING)
-    private Rank rank;
+    @Column(name = "member_rank")
+    private Rank memberRank;
 
     private Integer participantCount;
 }
