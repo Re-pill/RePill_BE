@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorStatus implements BaseErrorCode {
 
+    // 약품 관련 에러
+    MEDICINE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 약품 타입입니다."),
+
     // 필요한건 아래처럼 추가해서 사용해주세요.
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
     _BAD_REQUEST(HttpStatus.BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
