@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "member_location")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member_Location {
+public class MemberLocation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
