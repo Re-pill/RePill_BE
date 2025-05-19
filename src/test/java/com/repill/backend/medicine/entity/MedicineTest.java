@@ -23,7 +23,7 @@ class MedicineTest {
         LocalDate expirationDate = LocalDate.now().plusDays(30);
 
         // when
-        Medicine medicine = Medicine.create(mockMember, name, count, expirationDate, mockType);
+        Medicine medicine = Medicine.create(mockMember, mockType, name, count, expirationDate);
 
         // then
         assertEquals(name, medicine.getName());
