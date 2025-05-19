@@ -23,6 +23,10 @@ public class Medicine {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicine_type_id")
+    private MedicineType medicineType;
+
     @Column(nullable = false)
     private String name;
 
@@ -32,7 +36,21 @@ public class Medicine {
 
     private Boolean discarded = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "medicine_type_id", nullable = false)
-    private MedicineType medicineType;
+    private Medicine(Member member, MedicineType medicineType, String name, Integer count, LocalDate expirationDate) {
+        this.member = member;
+        this.medicineType = medicineType;
+        this.name = name;
+        this.count = count;
+        this.expirationDate = expirationDate;
+    }
+
+    public static Medicine create(Member member, MedicineType medicineType, String name, Integer count, LocalDate expirationDate) {
+        return new Medicine(
+                member,
+                medicineType,
+                name,
+                count,
+                expirationDate
+        );
+    }
 }
