@@ -1,14 +1,14 @@
 package com.repill.backend.medicine.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "medicine_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 public class MedicineType {
 
     @Id
@@ -17,5 +17,5 @@ public class MedicineType {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String typeName;
+    private String medicineTypeName;
 }
