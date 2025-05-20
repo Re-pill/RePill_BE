@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorStatus implements BaseErrorCode {
 
+    // 회원 관련 에러
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 회원입니다."),
+
     // 약품 관련 에러
     MEDICINE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 약품 타입입니다."),
 

@@ -2,9 +2,7 @@ package com.repill.backend.medicine.entity;
 
 import com.repill.backend.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +10,8 @@ import java.time.LocalDate;
 @Table(name = "medicine")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 public class Medicine {
 
     @Id
@@ -35,6 +35,10 @@ public class Medicine {
     private LocalDate expirationDate;
 
     private Boolean discarded = false;
+
+    private LocalDate discardedAt;
+
+    private String discardLocation;
 
     private Medicine(Member member, MedicineType medicineType, String name, Integer count, LocalDate expirationDate) {
         this.member = member;
