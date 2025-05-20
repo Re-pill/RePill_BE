@@ -2,6 +2,8 @@ package com.repill.backend.medicine.service;
 
 import com.repill.backend.medicine.entity.MedicineType;
 import com.repill.backend.medicine.repository.MedicineTypeJpaRepository;
+import com.repill.backend.member.entity.Member;
+import com.repill.backend.member.repository.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +13,18 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class DataInitializer {
 
+    private final MemberJpaRepository memberRepository;
+
     private final MedicineTypeJpaRepository medicineTypeRepository;
+
+    @Bean
+    public ApplicationRunner initMembers() {
+        return args -> {
+            if (memberRepository.count() == 0) {
+                memberRepository.save(Member.builder().name("FakeUser").email("FakeEmail@gmail.com").build());
+            }
+        };
+    }
 
     @Bean
     public ApplicationRunner initMedicineTypes() {
