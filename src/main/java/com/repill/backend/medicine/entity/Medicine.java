@@ -1,5 +1,6 @@
 package com.repill.backend.medicine.entity;
 
+import com.repill.backend.medicine.dto.MedicineRequest;
 import com.repill.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,5 +57,12 @@ public class Medicine {
                 count,
                 expirationDate
         );
+    }
+
+    public void changeMedicineInfo(MedicineRequest.patchMedicineRequest request, MedicineType medicineType){
+        this.name = request.getName();
+        this.medicineType = medicineType;
+        this.count = request.getCount();
+        this.expirationDate = request.getExpirationDate();
     }
 }
