@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class MedicineResponse {
 
@@ -20,5 +21,25 @@ public class MedicineResponse {
         LocalDate expirationDate;
         Boolean isDiscarded;
         String medicineTypeName;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MedicineDDayResponse {
+        String name;
+        LocalDate expirationDate;
+        Integer dDay;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MedicineDDayListResponse {
+
+        Integer totalCount;
+        List<MedicineDDayResponse> dDayResponseList;
     }
 }

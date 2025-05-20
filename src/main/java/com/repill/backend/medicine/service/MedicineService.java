@@ -9,9 +9,15 @@ import com.repill.backend.medicine.entity.MedicineType;
 import com.repill.backend.medicine.repository.MedicineJpaRepository;
 import com.repill.backend.medicine.repository.MedicineTypeJpaRepository;
 import com.repill.backend.member.entity.Member;
+import com.repill.backend.member.repository.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,19 +26,17 @@ public class MedicineService {
 
     private final MedicineJpaRepository medicineJpaRepository;
     private final MedicineTypeJpaRepository medicineTypeRepository;
+    private final MemberJpaRepository memberRepository;
 
     @Transactional
     public MedicineResponse.MedicineDetailResponse createMedicine(MedicineRequest request) {
-        Member fakeMember = Member.builder()
-                .id(1L)
-                .name("Fake User")
-                .email("fake@email.com")
-                .build();
+        Member member = memberRepository.findById(1L)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.getMedicineTypeName())
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
 
-        Medicine medicine = Medicine.create(fakeMember, medicineType, request.getName(), request.getCount(), request.getExpirationDate());
+        Medicine medicine = Medicine.create(member, medicineType, request.getName(), request.getCount(), request.getExpirationDate());
         medicineJpaRepository.save(medicine);
 
         return MedicineResponse.MedicineDetailResponse.builder()
@@ -43,5 +47,23 @@ public class MedicineService {
                 .expirationDate(medicine.getExpirationDate())
                 .isDiscarded(false)
                 .build();
+    }
+
+    public MedicineResponse.MedicineDDayListResponse getDDayList(Long memberId) {
+        List<Medicine> medicineList = medicineJpaRepository.findByMemberIdAndDiscardedFalse(memberId);
+
+        List<MedicineResponse.MedicineDDayResponse> dDayListResponse = medicineList.stream()
+                .map(medicine -> {
+                    long dDay = ChronoUnit.DAYS.between(LocalDate.now(), medicine.getExpirationDate());
+                    return MedicineResponse.MedicineDDayResponse.builder()
+                            .name(medicine.getName())
+                            .expirationDate(medicine.getExpirationDate())
+                            .dDay((int) dDay)
+                            .build();
+                })
+                .sorted(Comparator.comparingInt(MedicineResponse.MedicineDDayResponse::getDDay))
+                .toList();
+
+        return new MedicineResponse.MedicineDDayListResponse(dDayListResponse.size(), dDayListResponse);
     }
 }
