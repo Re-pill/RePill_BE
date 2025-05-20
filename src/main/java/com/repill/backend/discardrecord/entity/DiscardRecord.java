@@ -4,9 +4,7 @@ import com.repill.backend.medicine.entity.Medicine;
 import com.repill.backend.medicineboxarea.entity.MedicineBoxArea;
 import com.repill.backend.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +12,8 @@ import java.time.LocalDate;
 @Table(name = "discard_record")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 public class DiscardRecord {
 
     @Id
@@ -40,4 +40,23 @@ public class DiscardRecord {
     private Integer quantity;
 
     private String imageUrl;
+
+    private DiscardRecord(Member member, MedicineBoxArea medicineBoxArea, Medicine medicine, LocalDate discardedAt, Integer quantity, String imageUrl) {
+        this.member = member;
+        this.medicineBoxArea = medicineBoxArea;
+        this.medicine = medicine;
+        this.discardedAt = discardedAt;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+    }
+
+    public static DiscardRecord create(Member member, MedicineBoxArea medicineBoxArea, Medicine medicine, LocalDate discardedAt, Integer quantity, String imageUrl) {
+        return new DiscardRecord(
+                member,
+                medicineBoxArea,
+                medicine,
+                discardedAt,
+                quantity,
+                imageUrl);
+    }
 }
