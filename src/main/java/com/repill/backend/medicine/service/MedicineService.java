@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +83,32 @@ public class MedicineService {
                 .discardLocation(medicine.getDiscardLocation())
                 .medicineTypeName(medicine.getMedicineType().getMedicineTypeName())
                 .build();
+    }
+
+    @Transactional
+    public void deleteMedicine(Long medicineId, Long memberId) {
+        Medicine medicine = medicineJpaRepository.findById(medicineId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_NOT_FOUND));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        if (!medicine.getMember().equals(member)) {
+            throw new TestHandler(ErrorStatus.MEDICINE_NOT_MEMBER);
+        }
+        medicineJpaRepository.delete(medicine);
+    }
+
+    @Transactional
+    public void patchMedicine(Long medicineId, Long memberId, MedicineRequest.patchMedicineRequest request) {
+        Medicine medicine = medicineJpaRepository.findById(medicineId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_NOT_FOUND));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!medicine.getMember().equals(member)) {
+            throw new TestHandler(ErrorStatus.MEDICINE_NOT_MEMBER);
+        }
+        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.getMedicineTypeName())
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
+        medicine.changeMedicineInfo(request, medicineType);
     }
 }

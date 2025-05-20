@@ -1,5 +1,9 @@
 package com.repill.backend.medicine.dto;
 
+import com.repill.backend.medicine.entity.Medicine;
+import com.repill.backend.medicine.entity.MedicineType;
+import com.repill.backend.member.entity.Member;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -30,4 +34,12 @@ public class MedicineRequest {
 
     @NotBlank(message = "약품 유형은 필수입니다.")
     String medicineTypeName;
+
+    @Getter
+    public static class patchMedicineRequest {
+        String name;
+        String medicineTypeName;
+        Integer count;
+        LocalDate expirationDate;
+    }
 }
