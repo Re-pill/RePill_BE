@@ -2,9 +2,7 @@ package com.repill.backend.medicine.entity;
 
 import com.repill.backend.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +10,8 @@ import java.time.LocalDate;
 @Table(name = "medicine")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 public class Medicine {
 
     @Id

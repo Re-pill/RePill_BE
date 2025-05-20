@@ -1,5 +1,6 @@
 package com.repill.backend.medicine.service;
 
+import com.repill.backend.apiPayload.code.status.ErrorStatus;
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
 import com.repill.backend.medicine.dto.MedicineRequest;
 import com.repill.backend.medicine.dto.MedicineResponse;
@@ -7,6 +8,8 @@ import com.repill.backend.medicine.entity.Medicine;
 import com.repill.backend.medicine.entity.MedicineType;
 import com.repill.backend.medicine.repository.MedicineJpaRepository;
 import com.repill.backend.medicine.repository.MedicineTypeJpaRepository;
+import com.repill.backend.member.entity.Member;
+import com.repill.backend.member.repository.MemberJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +35,9 @@ class MedicineServiceTest {
 
     @Mock
     MedicineTypeJpaRepository medicineTypeRepository;
+
+    @Mock
+    MemberJpaRepository memberRepository;
 
     @InjectMocks
     MedicineService medicineService;
@@ -62,6 +69,9 @@ class MedicineServiceTest {
 
         ArgumentCaptor<Medicine> medicineCaptor = ArgumentCaptor.forClass(Medicine.class);
 
+        Member member = Member.builder().id(1L).build();
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+
         // when
         MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(request);
 
@@ -80,6 +90,7 @@ class MedicineServiceTest {
     @DisplayName("약품 타입이 없을 때 예외 발생")
     void createMedicine_typeNotFound() {
         // given
+        lenient().when(memberRepository.findById(1L)).thenReturn(Optional.of(Member.builder().id(1L).build()));
         when(medicineTypeRepository.findMedicineTypeByMedicineTypeName("알약"))
                 .thenReturn(Optional.empty());
 
@@ -87,5 +98,46 @@ class MedicineServiceTest {
         assertThatThrownBy(() -> medicineService.createMedicine(request))
                 .isInstanceOf(TestHandler.class);
         verify(medicineJpaRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("D-Day 리스트 정상 반환")
+    void getDDayList_success() {
+        Long memberId = 1L;
+        Medicine med1 = Medicine.builder()
+                .id(1L)
+                .name("타이레놀")
+                .expirationDate(LocalDate.now().plusDays(10))
+                .build();
+        Medicine med2 = Medicine.builder()
+                .id(2L)
+                .name("어린이시럽")
+                .expirationDate(LocalDate.now().plusDays(5))
+                .build();
+
+        when(medicineJpaRepository.findByMemberIdAndDiscardedFalse(memberId))
+                .thenReturn(List.of(med1, med2));
+
+        MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
+
+        assertThat(response.getTotalCount()).isEqualTo(2);
+        assertThat(response.getDDayResponseList()).hasSize(2);
+        assertThat(response.getDDayResponseList().get(0).getName()).isEqualTo("어린이시럽");
+        assertThat(response.getDDayResponseList().get(0).getDDay()).isEqualTo(5);
+        assertThat(response.getDDayResponseList().get(1).getName()).isEqualTo("타이레놀");
+        assertThat(response.getDDayResponseList().get(1).getDDay()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("D-Day 리스트 - 약품이 없을 때")
+    void getDDayList_empty() {
+        Long memberId = 1L;
+        when(medicineJpaRepository.findByMemberIdAndDiscardedFalse(memberId))
+                .thenReturn(List.of());
+
+        MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
+
+        assertThat(response.getTotalCount()).isZero();
+        assertThat(response.getDDayResponseList()).isEmpty();
     }
 }
