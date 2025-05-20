@@ -1,6 +1,7 @@
 package com.repill.backend.test;
 
 import com.repill.backend.apiPayload.ApiResponse;
+import com.repill.backend.global.security.handler.annotation.AuthUser;
 import com.repill.backend.test.dto.TestResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,13 @@ public class TestController {
         testService.CheckFlag(flag);
         return ApiResponse.onSuccess(TestConverter.toTempExceptionDTO(flag));
     } // flag == 1 예외 발생
+
+    @Operation(
+            summary = "액세스 토큰에서 멤버 정보를 가져오는 예시",
+            description = "현재 로그인 중인 사용자의 ID를 액세스 토큰에서 추출합니다.")
+    @GetMapping("/get-memberInfo")
+    public ApiResponse<String> getMemberTestAPI(@AuthUser Long memberId){
+        String result = "현재 사용자 ID : " + (String.valueOf(memberId));
+        return ApiResponse.onSuccess(result);
+    }
 }
