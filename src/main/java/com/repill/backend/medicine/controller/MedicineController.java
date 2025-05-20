@@ -2,6 +2,7 @@ package com.repill.backend.medicine.controller;
 
 import com.repill.backend.apiPayload.ApiResponse;
 import com.repill.backend.apiPayload.code.status.SuccessStatus;
+import com.repill.backend.global.security.handler.annotation.AuthUser;
 import com.repill.backend.medicine.dto.MedicineRequest;
 import com.repill.backend.medicine.dto.MedicineResponse;
 import com.repill.backend.medicine.service.MedicineService;
@@ -37,5 +38,12 @@ public class MedicineController {
     public ApiResponse<MedicineResponse.MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId) {
         MedicineResponse.MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
         return ApiResponse.of(SuccessStatus._OK, response);
+    }
+
+    @Operation(summary = "MY 약 삭제하기 API", description = "My약을 삭제합니다.")
+    @DeleteMapping("/{medicineId}")
+    public ApiResponse<String> deleteMedicine(@PathVariable Long medicineId, @AuthUser Long memberId) {
+        medicineService.deleteMedicine(medicineId, memberId);
+        return ApiResponse.of(SuccessStatus._OK,"MY약 삭제가 왼료되었습니다.");
     }
 }
