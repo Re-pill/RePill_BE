@@ -1,6 +1,5 @@
 package com.repill.backend.medicine.service;
 
-import com.repill.backend.apiPayload.code.status.ErrorStatus;
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
 import com.repill.backend.medicine.dto.MedicineRequest;
 import com.repill.backend.medicine.dto.MedicineResponse;
@@ -81,7 +80,7 @@ class MedicineServiceTest {
 
         assertThat(response.getName()).isEqualTo("타이레놀");
         assertThat(response.getMedicineTypeName()).isEqualTo("알약");
-        assertThat(response.getIsDiscarded()).isFalse();
+        assertThat(response.getDiscarded()).isFalse();
         assertThat(savedMedicine.getName()).isEqualTo("타이레놀");
         assertThat(savedMedicine.getCount()).isEqualTo(10);
     }
@@ -139,5 +138,53 @@ class MedicineServiceTest {
 
         assertThat(response.getTotalCount()).isZero();
         assertThat(response.getDDayResponseList()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("약품 디테일 조회 성공")
+    void getMedicineDetail_success() {
+        // given
+        Long medicineId = 1L;
+        MedicineType medicineType = MedicineType.builder()
+                .id(1L)
+                .medicineTypeName("알약")
+                .build();
+        Medicine medicine = Medicine.builder()
+                .id(medicineId)
+                .name("타이레놀")
+                .count(2)
+                .expirationDate(LocalDate.of(2025, 6, 1))
+                .discarded(true)
+                .discardedAt(LocalDate.of(2025, 5, 15))
+                .discardLocation("강릉시 폐의약품 수거함 1번")
+                .medicineType(medicineType)
+                .build();
+
+        when(medicineJpaRepository.findById(medicineId)).thenReturn(Optional.of(medicine));
+
+        // when
+        MedicineResponse.MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
+
+        // then
+        assertThat(response.getMedicineId()).isEqualTo(medicineId);
+        assertThat(response.getName()).isEqualTo("타이레놀");
+        assertThat(response.getCount()).isEqualTo(2);
+        assertThat(response.getExpirationDate()).isEqualTo(LocalDate.of(2025, 6, 1));
+        assertThat(response.getDiscarded()).isTrue();
+        assertThat(response.getDiscardedAt()).isEqualTo(LocalDate.of(2025, 5, 15));
+        assertThat(response.getDiscardLocation()).isEqualTo("강릉시 폐의약품 수거함 1번");
+        assertThat(response.getMedicineTypeName()).isEqualTo("알약");
+    }
+
+    @Test
+    @DisplayName("약품 디테일 조회 - 존재하지 않는 약품 예외")
+    void getMedicineDetail_notFound() {
+        // given
+        Long medicineId = 999L;
+        when(medicineJpaRepository.findById(medicineId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> medicineService.getMedicineDetail(medicineId))
+                .isInstanceOf(TestHandler.class);
     }
 }
