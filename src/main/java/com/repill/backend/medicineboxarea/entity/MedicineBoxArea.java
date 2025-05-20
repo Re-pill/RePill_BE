@@ -21,9 +21,11 @@ public class MedicineBoxArea {
 
     private String address;
 
-    private Double latitude;
-
+    // 경도 데이터, 좌표 X
     private Double longitude;
+
+    // 위도 데이터, 좌표 Y
+    private Double latitude;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
