@@ -36,6 +36,10 @@ public class Medicine {
 
     private Boolean discarded = false;
 
+    private LocalDate discardedAt;
+
+    private String discardLocation;
+
     private Medicine(Member member, MedicineType medicineType, String name, Integer count, LocalDate expirationDate) {
         this.member = member;
         this.medicineType = medicineType;

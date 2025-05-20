@@ -19,7 +19,9 @@ public class MedicineResponse {
         String name;
         Integer count;
         LocalDate expirationDate;
-        Boolean isDiscarded;
+        Boolean discarded;
+        LocalDate discardedAt;
+        String discardLocation;
         String medicineTypeName;
     }
 
@@ -38,7 +40,6 @@ public class MedicineResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MedicineDDayListResponse {
-
         Integer totalCount;
         List<MedicineDDayResponse> dDayResponseList;
     }

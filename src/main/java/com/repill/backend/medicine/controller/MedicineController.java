@@ -28,4 +28,10 @@ public class MedicineController {
         MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
+
+    @GetMapping("/{medicineId}")
+    public ApiResponse<MedicineResponse.MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId) {
+        MedicineResponse.MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
+        return ApiResponse.of(SuccessStatus._OK, response);
+    }
 }

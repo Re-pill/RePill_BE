@@ -45,7 +45,7 @@ public class MedicineService {
                 .name(medicine.getName())
                 .count(medicine.getCount())
                 .expirationDate(medicine.getExpirationDate())
-                .isDiscarded(false)
+                .discarded(false)
                 .build();
     }
 
@@ -65,5 +65,21 @@ public class MedicineService {
                 .toList();
 
         return new MedicineResponse.MedicineDDayListResponse(dDayListResponse.size(), dDayListResponse);
+    }
+
+    public MedicineResponse.MedicineDetailResponse getMedicineDetail(Long medicineId) {
+        Medicine medicine = medicineJpaRepository.findById(medicineId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
+
+        return MedicineResponse.MedicineDetailResponse.builder()
+                .medicineId(medicine.getId())
+                .name(medicine.getName())
+                .count(medicine.getCount())
+                .expirationDate(medicine.getExpirationDate())
+                .discarded(medicine.getDiscarded())
+                .discardedAt(medicine.getDiscardedAt())
+                .discardLocation(medicine.getDiscardLocation())
+                .medicineTypeName(medicine.getMedicineType().getMedicineTypeName())
+                .build();
     }
 }
