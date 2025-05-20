@@ -23,9 +23,9 @@ public class Member extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private Integer ecoContribution;
+    private Integer ecoContribution = 0;
 
-    private Integer level;
+    private Integer level = 1;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_rank")
