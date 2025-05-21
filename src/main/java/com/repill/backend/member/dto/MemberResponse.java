@@ -1,10 +1,7 @@
 package com.repill.backend.member.dto;
 
 import com.repill.backend.member.entity.Rank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -23,17 +20,36 @@ public class MemberResponse {
         Integer participantCount; // 참여 수
         Integer discardedCount; // 폐기 약품 충 수량
         Integer myMedicinesCount; // 등록된 MY 약 몇 건인지 Count
-        List<miniMyMydecine> miniMyMydecineList; // My 약 mini 표시
+        List<miniMyMedecine> miniMyMedecineList; // My 약 mini 표시
     }
 
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class miniMyMydecine {
+    public static class miniMyMedecine {
         Long medicineId;
         String content;
         String D_day;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StatisticsByTypeOfDrug {
+        Long memberId;
+        List<typeOfMedecine> typeOfMedecineList;
+    }
+
+    @Getter
+    @Builder
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class typeOfMedecine {
+        Long medecineId;
+        String medecineName;
+        Integer count;
+    }
 }

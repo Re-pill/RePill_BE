@@ -32,6 +32,7 @@ public class DataInitializer {
                 medicineTypeRepository.save(MedicineType.builder().medicineTypeName("액상약").build());
                 medicineTypeRepository.save(MedicineType.builder().medicineTypeName("주사제").build());
                 medicineTypeRepository.save(MedicineType.builder().medicineTypeName("연고").build());
+                medicineTypeRepository.save(MedicineType.builder().medicineTypeName("기타").build());
             }
         };
     }
