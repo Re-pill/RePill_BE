@@ -11,16 +11,17 @@ import org.springframework.http.HttpStatus;
 public enum ErrorStatus implements BaseErrorCode {
 
     // 회원 관련 에러
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 회원입니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "존재하지 않는 회원입니다."),
 
     // 약품 관련 에러
-    MEDICINE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 약품입니다."),
-    MEDICINE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 약품 타입입니다."),
-    INSUFFICIENT_MEDICINE_COUNT(HttpStatus.BAD_REQUEST, "COMMON400", "폐기하려는 약품의 수량이 부족합니다."),
-    MEDICINE_ALREADY_DISCARDED(HttpStatus.BAD_REQUEST, "COMMON400", "이미 폐기된 약품입니다."),
+    MEDICINE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "MEDICINE401", "존재하지 않는 약품 타입입니다."),
+    INSUFFICIENT_MEDICINE_COUNT(HttpStatus.BAD_REQUEST, "MEDICINE404", "폐기하려는 약품의 수량이 부족합니다."),
+    MEDICINE_ALREADY_DISCARDED(HttpStatus.BAD_REQUEST, "MEDICINE405", "이미 폐기된 약품입니다."),
 
     // 약품 보관함 관련 에러
     MEDICINE_BOX_AREA_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 약품 보관함입니다."),
+    MEDICINE_NOT_MEMBER(HttpStatus.BAD_REQUEST, "MEDICINE402", "해당 회원의 약이 아닙니다."),
+    MEDICINE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEDICINE403", "존재하지 않는 약입니다."),
 
     // 필요한건 아래처럼 추가해서 사용해주세요.
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),

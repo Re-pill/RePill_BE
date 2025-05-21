@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface MedicineJpaRepository extends JpaRepository<Medicine, Long> {
 
     List<Medicine> findByMemberIdAndDiscardedFalse(Long memberId);
-
     Optional<Medicine> findMedicineByMemberAndName(Member member, String name);
+    List<Medicine> findAllByMemberId(Long memberId);
+    void deleteById(Long id);
+    Medicine findById(long id);
 }

@@ -27,7 +27,7 @@ public class MedicineController {
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 
-    @Operation(summary = "D-Day 리스트 조회 API", description = "회원의 폐기되지 않은 약품 D-Day 리스트를 조회합니다.")
+    @Operation(summary = "MY 약 D-Day 리스트 조회 API", description = "회원의 폐기되지 않은 약품 D-Day 리스트를 조회합니다.")
     @GetMapping("/d-day/{memberId}")
     public ApiResponse<MedicineResponse.MedicineDDayListResponse> getDDayList(@AuthUser Long memberId) {
         MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
@@ -39,5 +39,21 @@ public class MedicineController {
     public ApiResponse<MedicineResponse.MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId) {
         MedicineResponse.MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
         return ApiResponse.of(SuccessStatus._OK, response);
+    }
+
+    @Operation(summary = "MY 약 삭제하기 API", description = "My약을 삭제합니다.")
+    @DeleteMapping("/{medicineId}")
+    public ApiResponse<String> deleteMedicine(@PathVariable Long medicineId, @AuthUser Long memberId) {
+        medicineService.deleteMedicine(medicineId, memberId);
+        return ApiResponse.of(SuccessStatus._OK,"MY약 삭제가 왼료되었습니다.");
+    }
+
+    @Operation(summary = "MY 약 수정하기 API", description = "My약 정보를 수정합니다.")
+    @PatchMapping("/{medicineId}")
+    public ApiResponse<String> patchMedicine(@PathVariable Long medicineId,
+                                             @AuthUser Long memberId,
+                                             @RequestBody MedicineRequest.patchMedicineRequest medicineRequest) {
+        medicineService.patchMedicine(medicineId, memberId, medicineRequest);
+        return ApiResponse.of(SuccessStatus._OK,"MY약 정보 수정이 완료되었습니다.");
     }
 }
