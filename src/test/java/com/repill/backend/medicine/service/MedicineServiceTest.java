@@ -72,7 +72,7 @@ class MedicineServiceTest {
         when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
 
         // when
-        MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(request);
+        MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(1L, request);
 
         // then
         verify(medicineJpaRepository, times(1)).save(medicineCaptor.capture());
@@ -94,7 +94,7 @@ class MedicineServiceTest {
                 .thenReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> medicineService.createMedicine(request))
+        assertThatThrownBy(() -> medicineService.createMedicine(1L, request))
                 .isInstanceOf(TestHandler.class);
         verify(medicineJpaRepository, never()).save(any());
     }

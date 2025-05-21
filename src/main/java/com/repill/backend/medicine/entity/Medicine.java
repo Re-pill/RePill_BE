@@ -1,5 +1,7 @@
 package com.repill.backend.medicine.entity;
 
+import com.repill.backend.apiPayload.code.status.ErrorStatus;
+import com.repill.backend.apiPayload.exception.handler.TestHandler;
 import com.repill.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,5 +58,18 @@ public class Medicine {
                 count,
                 expirationDate
         );
+    }
+
+    public void decreaseCount(int quantity) {
+        if (this.count < quantity) {
+            throw new TestHandler(ErrorStatus.INSUFFICIENT_MEDICINE_COUNT);
+        }
+
+        this.count -= quantity;
+
+        if (this.count == 0) {
+            this.discarded = true;
+            this.discardedAt = LocalDate.now();
+        }
     }
 }
