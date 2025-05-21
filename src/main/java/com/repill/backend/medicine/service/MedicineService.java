@@ -31,8 +31,8 @@ public class MedicineService {
     private final MemberJpaRepository memberRepository;
 
     @Transactional
-    public MedicineResponse.MedicineDetailResponse createMedicine(MedicineRequest request) {
-        Member member = memberRepository.findById(1L)
+    public MedicineResponse.MedicineDetailResponse createMedicine(Long memberId, MedicineRequest request) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.getMedicineTypeName())

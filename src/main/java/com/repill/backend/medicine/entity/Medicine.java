@@ -1,5 +1,7 @@
 package com.repill.backend.medicine.entity;
 
+import com.repill.backend.apiPayload.code.status.ErrorStatus;
+import com.repill.backend.apiPayload.exception.handler.TestHandler;
 import com.repill.backend.medicine.dto.MedicineRequest;
 import com.repill.backend.member.entity.Member;
 import jakarta.persistence.*;
@@ -59,6 +61,19 @@ public class Medicine {
         );
     }
 
+    public void decreaseCount(int quantity) {
+        if (this.count < quantity) {
+            throw new TestHandler(ErrorStatus.INSUFFICIENT_MEDICINE_COUNT);
+        }
+
+        this.count -= quantity;
+
+        if (this.count == 0) {
+            this.discarded = true;
+            this.discardedAt = LocalDate.now();
+        }
+    }
+      
     public void changeMedicineInfo(MedicineRequest.patchMedicineRequest request, MedicineType medicineType){
         this.name = request.getName();
         this.medicineType = medicineType;

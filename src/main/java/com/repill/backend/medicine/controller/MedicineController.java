@@ -21,14 +21,15 @@ public class MedicineController {
 
     @Operation(summary = "약품 등록 API", description = "약품 정보를 등록합니다.")
     @PostMapping
-    public ApiResponse<MedicineResponse.MedicineDetailResponse> createMedicine(@RequestBody @Validated MedicineRequest request) {
-        MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(request);
+    public ApiResponse<MedicineResponse.MedicineDetailResponse> createMedicine(@AuthUser Long memberId,
+                                                                               @RequestBody @Validated MedicineRequest request) {
+        MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(memberId, request);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 
     @Operation(summary = "MY 약 D-Day 리스트 조회 API", description = "회원의 폐기되지 않은 약품 D-Day 리스트를 조회합니다.")
     @GetMapping("/d-day/{memberId}")
-    public ApiResponse<MedicineResponse.MedicineDDayListResponse> getDDayList(@PathVariable Long memberId) {
+    public ApiResponse<MedicineResponse.MedicineDDayListResponse> getDDayList(@AuthUser Long memberId) {
         MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
         return ApiResponse.of(SuccessStatus._OK, response);
     }

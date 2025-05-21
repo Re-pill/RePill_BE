@@ -15,6 +15,11 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 약품 관련 에러
     MEDICINE_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "MEDICINE401", "존재하지 않는 약품 타입입니다."),
+    INSUFFICIENT_MEDICINE_COUNT(HttpStatus.BAD_REQUEST, "MEDICINE404", "폐기하려는 약품의 수량이 부족합니다."),
+    MEDICINE_ALREADY_DISCARDED(HttpStatus.BAD_REQUEST, "MEDICINE405", "이미 폐기된 약품입니다."),
+
+    // 약품 보관함 관련 에러
+    MEDICINE_BOX_AREA_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "존재하지 않는 약품 보관함입니다."),
     MEDICINE_NOT_MEMBER(HttpStatus.BAD_REQUEST, "MEDICINE402", "해당 회원의 약이 아닙니다."),
     MEDICINE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEDICINE403", "존재하지 않는 약입니다."),
 
