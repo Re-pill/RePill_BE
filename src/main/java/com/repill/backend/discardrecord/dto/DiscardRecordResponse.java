@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class DiscardRecordResponse {
 
@@ -27,5 +28,14 @@ public class DiscardRecordResponse {
         LocalDate discardedAt;
         String discardLocation;
         String imageUrl;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DiscardRecordListResponse {
+        Integer totalCount;
+        List<DiscardRecordDetailResponse> discardRecordDetailResponseList;
     }
 }

@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -68,5 +70,24 @@ public class DiscardRecordService {
                 .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
                 .imageUrl(discardRecord.getImageUrl())
                 .build();
+    }
+
+    public DiscardRecordResponse.DiscardRecordListResponse getDiscardRecordList(Long memberId) {
+        Member member = memberJpaRepository.findById(memberId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        List<DiscardRecord> discardRecordList = discardRecordJpaRepository.findAllByMember(member);
+
+        List<DiscardRecordResponse.DiscardRecordDetailResponse> discardRecordResponseList = discardRecordList.stream()
+                .map(discardRecord -> DiscardRecordResponse.DiscardRecordDetailResponse.builder()
+                        .name(discardRecord.getMedicine().getName())
+                        .expirationDate(discardRecord.getMedicine().getExpirationDate())
+                        .discardedAt(discardRecord.getDiscardedAt())
+                        .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
+                        .imageUrl(discardRecord.getImageUrl())
+                        .build())
+                .toList();
+
+        return new DiscardRecordResponse.DiscardRecordListResponse(discardRecordResponseList.size(), discardRecordResponseList);
     }
 }

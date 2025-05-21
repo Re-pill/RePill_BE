@@ -30,4 +30,10 @@ public class DiscardRecordController {
         DiscardRecordResponse.DiscardRecordDetailResponse response = discardRecordService.getDiscardRecordDetail(recordId);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
+
+    @GetMapping
+    public ApiResponse<DiscardRecordResponse.DiscardRecordListResponse> getDiscardRecordList(@AuthUser Long memberId) {
+        DiscardRecordResponse.DiscardRecordListResponse response = discardRecordService.getDiscardRecordList(memberId);
+        return ApiResponse.of(SuccessStatus._OK, response);
+    }
 }
