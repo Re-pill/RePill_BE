@@ -13,9 +13,12 @@ import com.repill.backend.medicine.repository.MedicineTypeJpaRepository;
 import com.repill.backend.member.converter.MemberConverter;
 import com.repill.backend.member.dto.MemberResponse;
 import com.repill.backend.member.entity.Member;
+import com.repill.backend.member.entity.MemberLocation;
+import com.repill.backend.member.repository.MemberLocationRepository;
 import com.repill.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +32,7 @@ public class MemberService {
     private final DiscardRecordRepository discardRecordRepository;
     private final DiscardRecordJpaRepository discardRecordJpaRepository;
     private final MedicineTypeJpaRepository medicineTypeJpaRepository;
+    private final MemberLocationRepository memberLocationRepository;
 
     public MemberResponse.memberInfoResponse getMemberInfo(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RePillClientException(ErrorStatus.USER_NOT_FOUND));
@@ -65,5 +69,19 @@ public class MemberService {
         List<DiscardRecord> discardList =  discardRecordJpaRepository.findAllByMember(member);
         List<MemberResponse.typeOfMedecine> DiscardMedicineList = getDiscardMedecineList(memberId,discardList);
         return MemberConverter.toStatisticsByTypeOfMedecine(member, DiscardMedicineList);
+    }
+
+    @Transactional
+    public void saveLocation(Long memberId,String location){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Optional<MemberLocation> getMemberLocation = memberLocationRepository.findByMember(member);
+
+        if(getMemberLocation.isPresent()){
+            getMemberLocation.get().setLocation(location);
+        }else{
+            MemberLocation newMemberLocation = new MemberLocation(member, location);
+            memberLocationRepository.save(newMemberLocation);
+        }
     }
 }

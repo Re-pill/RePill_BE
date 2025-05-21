@@ -25,4 +25,13 @@ public class MemberLocation {
     private Double latitude;
 
     private Double longitude;
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public MemberLocation(Member member, String location) {
+        this.member = member;
+        this.location = location;
+    }
 }
