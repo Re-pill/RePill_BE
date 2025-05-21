@@ -27,7 +27,7 @@ public class DiscardRecordService {
     private final MedicineJpaRepository medicineJpaRepository;
 
     @Transactional
-    public DiscardRecordResponse createDiscardRecord(Long memberId, DiscardRecordRequest request) {
+    public DiscardRecordResponse.DiscardRecordCreateResponse createDiscardRecord(Long memberId, DiscardRecordRequest request) {
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
@@ -54,6 +54,19 @@ public class DiscardRecordService {
 
         discardRecordJpaRepository.save(discardRecord);
 
-        return new DiscardRecordResponse("폐기 기록이 생성되었습니다.");
+        return new DiscardRecordResponse.DiscardRecordCreateResponse("폐기 기록이 생성되었습니다.");
+    }
+
+    public DiscardRecordResponse.DiscardRecordDetailResponse getDiscardRecordDetail(Long recordId) {
+        DiscardRecord discardRecord = discardRecordJpaRepository.findById(recordId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.DISCARD_RECORD_NOT_FOUND));
+
+        return DiscardRecordResponse.DiscardRecordDetailResponse.builder()
+                .name(discardRecord.getMedicine().getName())
+                .expirationDate(discardRecord.getMedicine().getExpirationDate())
+                .discardedAt(discardRecord.getDiscardedAt())
+                .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
+                .imageUrl(discardRecord.getImageUrl())
+                .build();
     }
 }

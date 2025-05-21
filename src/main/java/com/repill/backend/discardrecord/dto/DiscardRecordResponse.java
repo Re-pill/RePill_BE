@@ -5,11 +5,27 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+import java.time.LocalDate;
+
 public class DiscardRecordResponse {
 
-    String message;
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DiscardRecordCreateResponse {
+        String message;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DiscardRecordDetailResponse {
+        String name;
+        LocalDate expirationDate;
+        LocalDate discardedAt;
+        String discardLocation;
+        String imageUrl;
+    }
 }

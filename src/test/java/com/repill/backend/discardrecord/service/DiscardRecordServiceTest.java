@@ -71,7 +71,7 @@ class DiscardRecordServiceTest {
         when(medicineJpaRepository.findMedicineByMemberAndName(member, "타이레놀")).thenReturn(Optional.of(medicine));
 
         // when
-        DiscardRecordResponse response = discardRecordService.createDiscardRecord(1L, request);
+        DiscardRecordResponse.DiscardRecordCreateResponse response = discardRecordService.createDiscardRecord(1L, request);
 
         // then
         verify(medicineJpaRepository, times(1)).findMedicineByMemberAndName(member, "타이레놀");
