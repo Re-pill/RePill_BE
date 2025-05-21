@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,7 +29,7 @@ public class DiscardRecordService {
     private final MedicineJpaRepository medicineJpaRepository;
 
     @Transactional
-    public DiscardRecordResponse createDiscardRecord(Long memberId, DiscardRecordRequest request) {
+    public DiscardRecordResponse.DiscardRecordCreateResponse createDiscardRecord(Long memberId, DiscardRecordRequest request) {
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
@@ -54,6 +56,38 @@ public class DiscardRecordService {
 
         discardRecordJpaRepository.save(discardRecord);
 
-        return new DiscardRecordResponse("폐기 기록이 생성되었습니다.");
+        return new DiscardRecordResponse.DiscardRecordCreateResponse("폐기 기록이 생성되었습니다.");
+    }
+
+    public DiscardRecordResponse.DiscardRecordDetailResponse getDiscardRecordDetail(Long recordId) {
+        DiscardRecord discardRecord = discardRecordJpaRepository.findById(recordId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.DISCARD_RECORD_NOT_FOUND));
+
+        return DiscardRecordResponse.DiscardRecordDetailResponse.builder()
+                .name(discardRecord.getMedicine().getName())
+                .expirationDate(discardRecord.getMedicine().getExpirationDate())
+                .discardedAt(discardRecord.getDiscardedAt())
+                .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
+                .imageUrl(discardRecord.getImageUrl())
+                .build();
+    }
+
+    public DiscardRecordResponse.DiscardRecordListResponse getDiscardRecordList(Long memberId) {
+        Member member = memberJpaRepository.findById(memberId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        List<DiscardRecord> discardRecordList = discardRecordJpaRepository.findAllByMember(member);
+
+        List<DiscardRecordResponse.DiscardRecordDetailResponse> discardRecordResponseList = discardRecordList.stream()
+                .map(discardRecord -> DiscardRecordResponse.DiscardRecordDetailResponse.builder()
+                        .name(discardRecord.getMedicine().getName())
+                        .expirationDate(discardRecord.getMedicine().getExpirationDate())
+                        .discardedAt(discardRecord.getDiscardedAt())
+                        .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
+                        .imageUrl(discardRecord.getImageUrl())
+                        .build())
+                .toList();
+
+        return new DiscardRecordResponse.DiscardRecordListResponse(discardRecordResponseList.size(), discardRecordResponseList);
     }
 }

@@ -19,9 +19,21 @@ public class DiscardRecordController {
     private final DiscardRecordService discardRecordService;
 
     @PostMapping
-    public ApiResponse<DiscardRecordResponse> createDiscardRecord(@AuthUser Long memberId,
+    public ApiResponse<DiscardRecordResponse.DiscardRecordCreateResponse> createDiscardRecord(@AuthUser Long memberId,
                                                                   @RequestBody @Validated DiscardRecordRequest request) {
-        DiscardRecordResponse response = discardRecordService.createDiscardRecord(memberId, request);
+        DiscardRecordResponse.DiscardRecordCreateResponse response = discardRecordService.createDiscardRecord(memberId, request);
+        return ApiResponse.of(SuccessStatus._OK, response);
+    }
+
+    @GetMapping("/{recordId}")
+    public ApiResponse<DiscardRecordResponse.DiscardRecordDetailResponse> getDiscardRecordDetail(@PathVariable Long recordId) {
+        DiscardRecordResponse.DiscardRecordDetailResponse response = discardRecordService.getDiscardRecordDetail(recordId);
+        return ApiResponse.of(SuccessStatus._OK, response);
+    }
+
+    @GetMapping
+    public ApiResponse<DiscardRecordResponse.DiscardRecordListResponse> getDiscardRecordList(@AuthUser Long memberId) {
+        DiscardRecordResponse.DiscardRecordListResponse response = discardRecordService.getDiscardRecordList(memberId);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 }
