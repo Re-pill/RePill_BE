@@ -1,6 +1,7 @@
 package com.repill.backend.member.converter;
 
 import com.repill.backend.medicine.entity.Medicine;
+import com.repill.backend.medicine.entity.MedicineType;
 import com.repill.backend.member.dto.MemberResponse;
 import com.repill.backend.member.entity.Member;
 
@@ -13,7 +14,7 @@ public class MemberConverter {
     public static MemberResponse.memberInfoResponse toMemberInfoReponse(
             Member member,
             Integer discardedCount,
-            List<MemberResponse.miniMyMydecine> miniMyMydecineList){
+            List<MemberResponse.miniMyMedecine> miniMyMydecineList){
 
         return MemberResponse.memberInfoResponse.builder()
                 .memebrId(member.getId())
@@ -24,19 +25,34 @@ public class MemberConverter {
                 .participantCount(member.getParticipantCount())
                 .discardedCount(discardedCount)
                 .myMedicinesCount(miniMyMydecineList.size())
-                .miniMyMydecineList(miniMyMydecineList)
+                .miniMyMedecineList(miniMyMydecineList)
                 .build();
     }
 
-    public static MemberResponse.miniMyMydecine toMiniMyMedicine(Medicine medicine){
+    public static MemberResponse.miniMyMedecine toMiniMyMedicine(Medicine medicine){
         LocalDate expirationDate = medicine.getExpirationDate();
         long days = ChronoUnit.DAYS.between(LocalDate.now(), expirationDate);
         String dday = days == 0 ? "D-Day" : (days > 0 ? "D-" + days : "D+" + Math.abs(days));
 
-        return MemberResponse.miniMyMydecine.builder()
+        return MemberResponse.miniMyMedecine.builder()
                 .medicineId(medicine.getId())
                 .content(medicine.getName() + "-" + expirationDate)
                 .D_day(dday)
+                .build();
+    }
+
+    public static MemberResponse.typeOfMedecine totypeOfMedecine(MedicineType medicineType){
+        return MemberResponse.typeOfMedecine.builder()
+                .medecineId(medicineType.getId())
+                .medecineName(medicineType.getMedicineTypeName())
+                .count(0)
+                .build();
+    }
+
+    public static MemberResponse.StatisticsByTypeOfDrug toStatisticsByTypeOfMedecine(Member member, List<MemberResponse.typeOfMedecine> typeOfMedecineList){
+        return MemberResponse.StatisticsByTypeOfDrug.builder()
+                .memberId(member.getId())
+                .typeOfMedecineList(typeOfMedecineList)
                 .build();
     }
 }

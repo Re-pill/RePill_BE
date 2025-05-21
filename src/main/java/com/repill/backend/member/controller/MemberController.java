@@ -28,4 +28,12 @@ public class MemberController {
         MemberResponse.memberInfoResponse result = memberService.getMemberInfo(memberId);
         return ApiResponse.onSuccess(result);
     }
+
+    @Operation(summary = "폐기한 약품 종류 통계 (MY 페이지 하단 차트) API",
+            description = "본인이 그동안 폐기했던 약품 종류의 통계를 조회합니다.")
+    @GetMapping("/discard-medicines")
+    public ApiResponse<MemberResponse.StatisticsByTypeOfDrug> getMedicineTypeStatistics(@AuthUser Long memberId) {
+        MemberResponse.StatisticsByTypeOfDrug result = memberService.getMedicineTypeStatistics(memberId);
+        return ApiResponse.onSuccess(result);
+    }
 }
