@@ -142,4 +142,51 @@ class DiscardRecordServiceTest {
 
         verify(discardRecordJpaRepository, never()).save(any());
     }
+
+    @Test
+    @DisplayName("폐기 기록 상세 조회 성공")
+    void getDiscardRecordDetail_success() {
+        // given
+        Long recordId = 1L;
+        Medicine medicine = Medicine.builder()
+                .id(1L)
+                .name("타이레놀")
+                .expirationDate(java.time.LocalDate.of(2025, 6, 1))
+                .build();
+        MedicineBoxArea boxArea = MedicineBoxArea.builder()
+                .id(1L)
+                .address("강릉시 폐의약품 수거함 1번")
+                .build();
+        DiscardRecord discardRecord = DiscardRecord.builder()
+                .id(recordId)
+                .medicine(medicine)
+                .medicineBoxArea(boxArea)
+                .discardedAt(java.time.LocalDate.of(2024, 6, 1))
+                .imageUrl("test.jpg")
+                .build();
+
+        when(discardRecordJpaRepository.findById(recordId)).thenReturn(Optional.of(discardRecord));
+
+        // when
+        DiscardRecordResponse.DiscardRecordDetailResponse response = discardRecordService.getDiscardRecordDetail(recordId);
+
+        // then
+        assertThat(response.getName()).isEqualTo("타이레놀");
+        assertThat(response.getExpirationDate()).isEqualTo(java.time.LocalDate.of(2025, 6, 1));
+        assertThat(response.getDiscardedAt()).isEqualTo(java.time.LocalDate.of(2024, 6, 1));
+        assertThat(response.getDiscardLocation()).isEqualTo("강릉시 폐의약품 수거함 1번");
+        assertThat(response.getImageUrl()).isEqualTo("test.jpg");
+    }
+
+    @Test
+    @DisplayName("폐기 기록 상세 조회 - 기록이 없을 때 예외 발생")
+    void getDiscardRecordDetail_notFound() {
+        // given
+        Long recordId = 999L;
+        when(discardRecordJpaRepository.findById(recordId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> discardRecordService.getDiscardRecordDetail(recordId))
+                .isInstanceOf(TestHandler.class);
+    }
 }
