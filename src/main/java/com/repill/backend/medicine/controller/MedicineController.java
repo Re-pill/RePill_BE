@@ -28,7 +28,7 @@ public class MedicineController {
     }
 
     @Operation(summary = "MY 약 D-Day 리스트 조회 API", description = "회원의 폐기되지 않은 약품 D-Day 리스트를 조회합니다.")
-    @GetMapping("/d-day/{memberId}")
+    @GetMapping("/d-day")
     public ApiResponse<MedicineResponse.MedicineDDayListResponse> getDDayList(@AuthUser Long memberId) {
         MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
         return ApiResponse.of(SuccessStatus._OK, response);
