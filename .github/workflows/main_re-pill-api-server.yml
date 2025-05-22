@@ -26,6 +26,16 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          JWT_ACCESS_TOKEN_TIME: ${{ secrets.JWT_ACCESS_TOKEN_TIME }}
+          JWT_REFRESH_TOKEN_TIME: ${{ secrets.JWT_REFRESH_TOKEN_TIME }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          KAKAO_CLIENT_ID : ${{ secrets.KAKAO_CLIENT_ID }}
+          KAKAO_CLIENT_SECRET : ${{ secrets.KAKAO_CLIENT_SECRET }}
+          KAKAO_REDIRECT_URI : ${{ secrets.KAKAO_REDIRECT_URI }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
