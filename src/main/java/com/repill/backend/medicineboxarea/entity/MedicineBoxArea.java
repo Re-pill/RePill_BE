@@ -30,4 +30,6 @@ public class MedicineBoxArea {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LocationType locationType;
+
+    private String telephone;
 }

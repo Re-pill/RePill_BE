@@ -30,6 +30,7 @@ public class MedicineBoxAreaService {
                         .latitude(area.getLatitude())
                         .longitude(area.getLongitude())
                         .address(area.getAddress())
+                        .telephone(area.getTelephone())
                         .build())
                 .collect(Collectors.toList());
 
