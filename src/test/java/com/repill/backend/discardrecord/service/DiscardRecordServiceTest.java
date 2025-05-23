@@ -55,7 +55,6 @@ class DiscardRecordServiceTest {
                 .medicineBoxAreaName("강릉시 폐의약품 수거함 1번")
                 .medicineName("타이레놀")
                 .quantity(2)
-                .imageUrl("test.jpg")
                 .build();
 
         member = Member.builder().id(1L).build();
@@ -163,7 +162,6 @@ class DiscardRecordServiceTest {
                 .medicine(medicine)
                 .medicineBoxArea(boxArea)
                 .discardedAt(java.time.LocalDate.of(2024, 6, 1))
-                .imageUrl("test.jpg")
                 .build();
 
         when(discardRecordJpaRepository.findById(recordId)).thenReturn(Optional.of(discardRecord));
@@ -176,7 +174,6 @@ class DiscardRecordServiceTest {
         assertThat(response.getExpirationDate()).isEqualTo(java.time.LocalDate.of(2025, 6, 1));
         assertThat(response.getDiscardedAt()).isEqualTo(java.time.LocalDate.of(2024, 6, 1));
         assertThat(response.getDiscardLocation()).isEqualTo("강릉시 폐의약품 수거함 1번");
-        assertThat(response.getImageUrl()).isEqualTo("test.jpg");
     }
 
     @Test
@@ -207,14 +204,12 @@ class DiscardRecordServiceTest {
                 .medicine(medicine1)
                 .medicineBoxArea(boxArea)
                 .discardedAt(java.time.LocalDate.of(2024, 6, 1))
-                .imageUrl("img1.jpg")
                 .build();
         DiscardRecord record2 = DiscardRecord.builder()
                 .id(2L)
                 .medicine(medicine2)
                 .medicineBoxArea(boxArea)
                 .discardedAt(java.time.LocalDate.of(2024, 6, 2))
-                .imageUrl("img2.jpg")
                 .build();
 
         when(discardRecordJpaRepository.findAllByMember(member)).thenReturn(List.of(record1, record2));

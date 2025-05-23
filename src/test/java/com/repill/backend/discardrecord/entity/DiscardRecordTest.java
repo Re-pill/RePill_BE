@@ -23,10 +23,9 @@ class DiscardRecordTest {
 
         LocalDate discardedAt = LocalDate.now();
         int quantity = 5;
-        String imageUrl = "http://test.com/image.jpg";
 
         // when
-        DiscardRecord record = DiscardRecord.create(mockMember, mockArea, mockMedicine, discardedAt, quantity, imageUrl);
+        DiscardRecord record = DiscardRecord.create(mockMember, mockArea, mockMedicine, discardedAt, quantity);
 
         // then
         assertEquals(mockMember, record.getMember());
@@ -34,6 +33,5 @@ class DiscardRecordTest {
         assertEquals(mockMedicine, record.getMedicine());
         assertEquals(discardedAt, record.getDiscardedAt());
         assertEquals(quantity, record.getQuantity());
-        assertEquals(imageUrl, record.getImageUrl());
     }
 }
