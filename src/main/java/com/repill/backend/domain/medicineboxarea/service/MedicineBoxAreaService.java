@@ -64,7 +64,7 @@ public class MedicineBoxAreaService {
         return earthRadius * c;
     }
 
-    public MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse getMesicineBoxAreaDetail(Long medicineBoxAreaId){
+    public MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse getMedicineBoxAreaDetail(Long medicineBoxAreaId){
         MedicineBoxArea area = medicineBoxAreaJpaRepository.findById(medicineBoxAreaId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_BOX_AREA_NOT_FOUND));
 
