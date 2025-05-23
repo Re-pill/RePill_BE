@@ -35,7 +35,7 @@ public class MedicineBoxAreaService {
                         .address(area.getAddress())
                         .telephone(area.getTelephone())
                         .build())
-                .filter(area -> calcDistance(userLat, userLng, area.getLatitude(), area.getLongitude()) <= 10.0)
+                .filter(area -> calcDistance(userLat, userLng, area.getLatitude(), area.getLongitude()) <= 3.0)
                 .collect(Collectors.toList());
 
         if ("nearest".equals(filter)) {
