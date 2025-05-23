@@ -34,7 +34,7 @@ public class MedicineBoxAreaController {
     @Operation(summary = "폐의약품 수거함 상세 조회 API", description = "넘겨받은 ID에 해당하는 폐의약품 수거함을 상세 조회합니다.")
     @GetMapping("/{medicineBoxAreaId}")
     public ApiResponse<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> getMedicineBoxAreaDetail(@PathVariable Long medicineBoxAreaId){
-        MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse result = medicineBoxAreaService. getMesicineBoxAreaDetail(medicineBoxAreaId);
+        MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse result = medicineBoxAreaService.getMedicineBoxAreaDetail(medicineBoxAreaId);
         return ApiResponse.of(SuccessStatus._OK, result);
     }
 }

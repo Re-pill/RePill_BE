@@ -25,6 +25,7 @@ public class MedicineBoxAreaService {
                                                                                               String filter) {
         List<MedicineBoxArea> areas = medicineBoxAreaJpaRepository.findAll();
 
+        // 30km 이내만 필터링
         List<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> result = areas.stream()
                 .map(area -> MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse.builder()
                         .id(area.getId())
@@ -34,6 +35,7 @@ public class MedicineBoxAreaService {
                         .address(area.getAddress())
                         .telephone(area.getTelephone())
                         .build())
+                .filter(area -> calcDistance(userLat, userLng, area.getLatitude(), area.getLongitude()) <= 30.0)
                 .collect(Collectors.toList());
 
         if ("nearest".equals(filter)) {
@@ -62,7 +64,7 @@ public class MedicineBoxAreaService {
         return earthRadius * c;
     }
 
-    public MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse getMesicineBoxAreaDetail(Long medicineBoxAreaId){
+    public MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse getMedicineBoxAreaDetail(Long medicineBoxAreaId){
         MedicineBoxArea area = medicineBoxAreaJpaRepository.findById(medicineBoxAreaId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_BOX_AREA_NOT_FOUND));
 
