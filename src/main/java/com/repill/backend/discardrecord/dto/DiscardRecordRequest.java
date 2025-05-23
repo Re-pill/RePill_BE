@@ -1,18 +1,15 @@
 package com.repill.backend.discardrecord.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiscardRecordRequest {
 
-    String medicineBoxAreaName;
-    String medicineName;
-    int quantity;
-    String imageUrl;
+    public String medicineBoxAreaName;
+    public String medicineName;
+    public int quantity;
 }

@@ -50,8 +50,7 @@ public class DiscardRecordService {
                 medicineBoxArea,
                 medicine,
                 java.time.LocalDate.now(),
-                request.getQuantity(),
-                request.getImageUrl()
+                request.getQuantity()
         );
 
         discardRecordJpaRepository.save(discardRecord);
@@ -68,7 +67,6 @@ public class DiscardRecordService {
                 .expirationDate(discardRecord.getMedicine().getExpirationDate())
                 .discardedAt(discardRecord.getDiscardedAt())
                 .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
-                .imageUrl(discardRecord.getImageUrl())
                 .build();
     }
 
@@ -84,7 +82,6 @@ public class DiscardRecordService {
                         .expirationDate(discardRecord.getMedicine().getExpirationDate())
                         .discardedAt(discardRecord.getDiscardedAt())
                         .discardLocation(discardRecord.getMedicineBoxArea().getAddress())
-                        .imageUrl(discardRecord.getImageUrl())
                         .build())
                 .toList();
 
