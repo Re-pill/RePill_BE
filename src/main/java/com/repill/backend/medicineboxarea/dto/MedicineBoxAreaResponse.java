@@ -14,11 +14,12 @@ public class MedicineBoxAreaResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MedicineBoxAreaDetailResponse {
-        private Long id;
-        private String name;
-        private double latitude;
-        private double longitude;
-        private String address;
+        Long id;
+        String name;
+        double latitude;
+        double longitude;
+        String address;
+        String telephone;
     }
 
     @Getter
