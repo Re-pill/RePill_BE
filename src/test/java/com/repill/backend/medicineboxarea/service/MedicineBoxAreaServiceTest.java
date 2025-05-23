@@ -40,11 +40,12 @@ class MedicineBoxAreaServiceTest {
                 .address("A주소")
                 .telephone("010-1234-5678")
                 .build();
+        // areaB를 areaA에서 10km 이내로 조정
         areaB = MedicineBoxArea.builder()
                 .id(2L)
                 .name("B수거함")
-                .latitude(37.1)
-                .longitude(127.1)
+                .latitude(37.05) // 약 5.5km 거리
+                .longitude(127.0)
                 .address("B주소")
                 .telephone("010-1234-5678")
                 .build();
@@ -61,6 +62,7 @@ class MedicineBoxAreaServiceTest {
                 medicineBoxAreaService.getMedicineBoxAreaList(37.0, 127.0, "nearest");
 
         // then
+        assertThat(result.size()).isEqualTo(2);
         assertThat(result.get(0).getName()).isEqualTo("A수거함"); // A가 더 가까움
         assertThat(result.get(1).getName()).isEqualTo("B수거함");
     }
@@ -72,8 +74,8 @@ class MedicineBoxAreaServiceTest {
         MedicineBoxArea areaC = MedicineBoxArea.builder()
                 .id(3L)
                 .name("C수거함")
-                .latitude(37.2)
-                .longitude(127.2)
+                .latitude(37.08) // 37.09 → 37.08로 수정 (약 8.9km)
+                .longitude(127.0)
                 .address("C주소")
                 .telephone("010-1234-5678")
                 .build();
@@ -84,6 +86,7 @@ class MedicineBoxAreaServiceTest {
                 medicineBoxAreaService.getMedicineBoxAreaList(37.0, 127.0, "name");
 
         // then
+        assertThat(result.size()).isEqualTo(3);
         assertThat(result.get(0).getName()).isEqualTo("A수거함");
         assertThat(result.get(1).getName()).isEqualTo("B수거함");
         assertThat(result.get(2).getName()).isEqualTo("C수거함");
