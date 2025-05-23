@@ -40,7 +40,7 @@ class MedicineBoxAreaServiceTest {
                 .address("A주소")
                 .telephone("010-1234-5678")
                 .build();
-        
+
         areaB = MedicineBoxArea.builder()
                 .id(2L)
                 .name("B수거함")
