@@ -28,16 +28,12 @@ public class DiscardRecordController {
     @Operation(summary = "약 폐기하기 API", description = "이미지와 함께 약 폐기 기록을 생성합니다.")
     @PostMapping(consumes = {"multipart/form-data"})
     public ApiResponse<DiscardRecordResponse.DiscardRecordCreateResponse> createDiscardRecord(@AuthUser Long memberId,
-                                                                                              @RequestPart("request") String request,
+                                                                                              @RequestPart("request") DiscardRecordRequest request,
                                                                                               @RequestPart(value = "image", required = false) MultipartFile image) throws Exception {
-
-        DiscardRecordRequest discardRecordRequest = objectMapper.readValue(request, DiscardRecordRequest.class);
-
         if (image != null && !image.isEmpty()) {
             String imageUrl = azureBlobService.uploadFile("re-pill-container", image);
         }
-
-        DiscardRecordResponse.DiscardRecordCreateResponse response = discardRecordService.createDiscardRecord(memberId, discardRecordRequest);
+        DiscardRecordResponse.DiscardRecordCreateResponse response = discardRecordService.createDiscardRecord(memberId, request);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 
