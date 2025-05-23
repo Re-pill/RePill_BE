@@ -39,24 +39,21 @@ public class DiscardRecord {
     @Column(nullable = false)
     private Integer quantity;
 
-    private String imageUrl;
-
-    private DiscardRecord(Member member, MedicineBoxArea medicineBoxArea, Medicine medicine, LocalDate discardedAt, Integer quantity, String imageUrl) {
+    private DiscardRecord(Member member, MedicineBoxArea medicineBoxArea, Medicine medicine, LocalDate discardedAt, Integer quantity) {
         this.member = member;
         this.medicineBoxArea = medicineBoxArea;
         this.medicine = medicine;
         this.discardedAt = discardedAt;
         this.quantity = quantity;
-        this.imageUrl = imageUrl;
     }
 
-    public static DiscardRecord create(Member member, MedicineBoxArea medicineBoxArea, Medicine medicine, LocalDate discardedAt, Integer quantity, String imageUrl) {
+    public static DiscardRecord create(Member member, MedicineBoxArea medicineBoxArea, Medicine medicine, LocalDate discardedAt, Integer quantity) {
         return new DiscardRecord(
                 member,
                 medicineBoxArea,
                 medicine,
                 discardedAt,
-                quantity,
-                imageUrl);
+                quantity
+        );
     }
 }
