@@ -1,6 +1,6 @@
 package com.repill.backend.global.security.principal;
 
-import com.repill.backend.member.entity.Member;
+import com.repill.backend.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
