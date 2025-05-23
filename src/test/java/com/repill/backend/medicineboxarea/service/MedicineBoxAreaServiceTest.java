@@ -1,8 +1,9 @@
 package com.repill.backend.medicineboxarea.service;
 
-import com.repill.backend.medicineboxarea.dto.MedicineBoxAreaResponse;
-import com.repill.backend.medicineboxarea.entity.MedicineBoxArea;
-import com.repill.backend.medicineboxarea.repostory.MedicineBoxAreaJpaRepository;
+import com.repill.backend.domain.medicineboxarea.dto.MedicineBoxAreaResponse;
+import com.repill.backend.domain.medicineboxarea.entity.MedicineBoxArea;
+import com.repill.backend.domain.medicineboxarea.repostory.MedicineBoxAreaJpaRepository;
+import com.repill.backend.domain.medicineboxarea.service.MedicineBoxAreaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -2,8 +2,8 @@ package com.repill.backend.global.security.principal;
 
 import com.repill.backend.apiPayload.code.status.ErrorStatus;
 import com.repill.backend.apiPayload.exception.RePillClientException;
-import com.repill.backend.member.entity.Member;
-import com.repill.backend.member.repository.MemberRepository;
+import com.repill.backend.domain.member.entity.Member;
+import com.repill.backend.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

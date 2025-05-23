@@ -1,6 +1,8 @@
 package com.repill.backend.medicine.entity;
 
-import com.repill.backend.member.entity.Member;
+import com.repill.backend.domain.medicine.entity.Medicine;
+import com.repill.backend.domain.medicine.entity.MedicineType;
+import com.repill.backend.domain.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -2,8 +2,8 @@ package com.repill.backend.global.security.conveter;
 
 import com.repill.backend.global.security.authDTO.AuthResponseDTO;
 import com.repill.backend.global.security.authDTO.KakaoProfile;
-import com.repill.backend.member.entity.Member;
-import com.repill.backend.member.entity.Rank;
+import com.repill.backend.domain.member.entity.Member;
+import com.repill.backend.domain.member.entity.Rank;
 
 public class AuthConverter {
 
