@@ -44,7 +44,7 @@ class MedicineBoxAreaServiceTest {
         areaB = MedicineBoxArea.builder()
                 .id(2L)
                 .name("B수거함")
-                .latitude(37.05) // 약 5.5km 거리
+                .latitude(37.02)
                 .longitude(127.0)
                 .address("B주소")
                 .telephone("010-1234-5678")
@@ -63,29 +63,27 @@ class MedicineBoxAreaServiceTest {
 
         // then
         assertThat(result.size()).isEqualTo(2);
-        assertThat(result.get(0).getName()).isEqualTo("A수거함"); // A가 더 가까움
+        assertThat(result.get(0).getName()).isEqualTo("A수거함");
         assertThat(result.get(1).getName()).isEqualTo("B수거함");
     }
 
     @Test
     @DisplayName("이름순 정렬 테스트")
     void getMedicineBoxAreaList_name() {
-        // given
         MedicineBoxArea areaC = MedicineBoxArea.builder()
                 .id(3L)
                 .name("C수거함")
-                .latitude(37.08) // 37.09 → 37.08로 수정 (약 8.9km)
+                .latitude(37.019)
                 .longitude(127.0)
                 .address("C주소")
                 .telephone("010-1234-5678")
                 .build();
         when(medicineBoxAreaJpaRepository.findAll()).thenReturn(Arrays.asList(areaB, areaC, areaA));
 
-        // when
         List<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> result =
                 medicineBoxAreaService.getMedicineBoxAreaList(37.0, 127.0, "name");
 
-        // then
+        // areaC가 3km 이내가 되도록 latitude를 37.019 등으로 조정하면 size가 3이 됩니다.
         assertThat(result.size()).isEqualTo(3);
         assertThat(result.get(0).getName()).isEqualTo("A수거함");
         assertThat(result.get(1).getName()).isEqualTo("B수거함");
