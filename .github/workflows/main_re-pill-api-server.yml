@@ -36,6 +36,7 @@ jobs:
           KAKAO_CLIENT_ID : ${{ secrets.KAKAO_CLIENT_ID }}
           KAKAO_CLIENT_SECRET : ${{ secrets.KAKAO_CLIENT_SECRET }}
           KAKAO_REDIRECT_URI : ${{ secrets.KAKAO_REDIRECT_URI }}
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
