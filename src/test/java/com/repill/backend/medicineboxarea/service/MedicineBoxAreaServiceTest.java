@@ -40,7 +40,7 @@ class MedicineBoxAreaServiceTest {
                 .address("A주소")
                 .telephone("010-1234-5678")
                 .build();
-        // areaB를 areaA에서 10km 이내로 조정
+
         areaB = MedicineBoxArea.builder()
                 .id(2L)
                 .name("B수거함")
