@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface MedicineBoxAreaJpaRepository extends JpaRepository<MedicineBoxArea, Long> {
 
     Optional<MedicineBoxArea> findByName(String name);
+    MedicineBoxArea findById(long id);
 }

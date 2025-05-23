@@ -1,5 +1,8 @@
 package com.repill.backend.medicineboxarea.service;
 
+import com.repill.backend.apiPayload.code.status.ErrorStatus;
+import com.repill.backend.apiPayload.exception.handler.TestHandler;
+import com.repill.backend.medicine.entity.Medicine;
 import com.repill.backend.medicineboxarea.dto.MedicineBoxAreaResponse;
 import com.repill.backend.medicineboxarea.entity.MedicineBoxArea;
 import com.repill.backend.medicineboxarea.repostory.MedicineBoxAreaJpaRepository;
@@ -9,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,4 +63,18 @@ public class MedicineBoxAreaService {
 
         return earthRadius * c;
     }
+
+    public MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse getMesicineBoxAreaDetail(Long medicineBoxAreaId){
+        MedicineBoxArea area = medicineBoxAreaJpaRepository.findById(medicineBoxAreaId)
+                .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_BOX_AREA_NOT_FOUND));
+
+        return MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse.builder()
+                .name(area.getName())
+                .latitude(area.getLatitude())
+                .longitude(area.getLongitude())
+                .address(area.getAddress())
+                .telephone(area.getTelephone())
+                .build();
+    }
+
 }

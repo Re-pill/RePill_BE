@@ -6,10 +6,7 @@ import com.repill.backend.medicineboxarea.dto.MedicineBoxAreaResponse;
 import com.repill.backend.medicineboxarea.service.MedicineBoxAreaService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +29,12 @@ public class MedicineBoxAreaController {
                         .totalCount(response.size())
                         .medicineBoxAreaDetailResponseList(response)
                         .build());
+    }
+
+    @Operation(summary = "폐의약품 수거함 상세 조회 API", description = "넘겨받은 ID에 해당하는 폐의약품 수거함을 상세 조회합니다.")
+    @GetMapping("/{medicineBoxAreaId}")
+    public ApiResponse<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> getMedicineBoxAreaDetail(@PathVariable Long medicineBoxAreaId){
+        MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse result = medicineBoxAreaService. getMesicineBoxAreaDetail(medicineBoxAreaId);
+        return ApiResponse.of(SuccessStatus._OK, result);
     }
 }
