@@ -1,14 +1,15 @@
 package com.repill.backend.medicine.service;
 
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
-import com.repill.backend.medicine.dto.MedicineRequest;
-import com.repill.backend.medicine.dto.MedicineResponse;
-import com.repill.backend.medicine.entity.Medicine;
-import com.repill.backend.medicine.entity.MedicineType;
-import com.repill.backend.medicine.repository.MedicineJpaRepository;
-import com.repill.backend.medicine.repository.MedicineTypeJpaRepository;
-import com.repill.backend.member.entity.Member;
-import com.repill.backend.member.repository.MemberJpaRepository;
+import com.repill.backend.domain.medicine.dto.MedicineRequest;
+import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.entity.Medicine;
+import com.repill.backend.domain.medicine.entity.MedicineType;
+import com.repill.backend.domain.medicine.repository.MedicineJpaRepository;
+import com.repill.backend.domain.medicine.repository.MedicineTypeJpaRepository;
+import com.repill.backend.domain.medicine.service.MedicineService;
+import com.repill.backend.domain.member.entity.Member;
+import com.repill.backend.domain.member.repository.MemberJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
