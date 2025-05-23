@@ -37,6 +37,7 @@ class MedicineBoxAreaServiceTest {
                 .latitude(37.0)
                 .longitude(127.0)
                 .address("A주소")
+                .telephone("010-1234-5678")
                 .build();
         areaB = MedicineBoxArea.builder()
                 .id(2L)
@@ -44,6 +45,7 @@ class MedicineBoxAreaServiceTest {
                 .latitude(37.1)
                 .longitude(127.1)
                 .address("B주소")
+                .telephone("010-1234-5678")
                 .build();
     }
 
@@ -72,6 +74,7 @@ class MedicineBoxAreaServiceTest {
                 .latitude(37.2)
                 .longitude(127.2)
                 .address("C주소")
+                .telephone("010-1234-5678")
                 .build();
         when(medicineBoxAreaJpaRepository.findAll()).thenReturn(Arrays.asList(areaB, areaC, areaA));
 
