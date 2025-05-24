@@ -31,13 +31,14 @@ public class MedicineBoxAreaController {
                 .build());
     }
 
-    @Operation(summary = "폐의약품 수거함 위치 리스트 조회 API", description = "폐의약품 수거함 유형의 따른 폐의약품 수거함의 위치를 조회합니다.")
     @GetMapping("/list/locationType")
-    public ApiResponse<MedicineBoxAreaResponse.MedicineBoxAreaListResponse> getMapListByLocationType(@RequestParam double userLat,
-                                                                                                     @RequestParam double userLng,
-                                                                                                     @RequestParam String locationType) {
+    public ApiResponse<MedicineBoxAreaResponse.MedicineBoxAreaListResponse> getMapListByLocationTypes(
+            @RequestParam double userLat,
+            @RequestParam double userLng,
+            @RequestParam List<String> locationTypes) {
 
-        List<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> response = medicineBoxAreaService.getMedicineBoxAreaListByLocationType(userLat, userLng, locationType);
+        List<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> response =
+                medicineBoxAreaService.getMedicineBoxAreaListByLocationTypes(userLat, userLng, locationTypes);
 
         return ApiResponse.of(SuccessStatus._OK, MedicineBoxAreaResponse.MedicineBoxAreaListResponse.builder()
                 .totalCount(response.size())
