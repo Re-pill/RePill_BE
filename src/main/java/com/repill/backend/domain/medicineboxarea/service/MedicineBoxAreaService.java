@@ -49,14 +49,17 @@ public class MedicineBoxAreaService {
         return result;
     }
 
-    public List<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> getMedicineBoxAreaListByLocationType(double userLat,
-                                                                                                            double userLng,
-                                                                                                            String locationTypeStr) {
-        LocationType locationType = LocationType.valueOf(locationTypeStr);
+    public List<MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse> getMedicineBoxAreaListByLocationTypes(
+            double userLat, double userLng, List<String> locationTypeStrs) {
+
+        List<LocationType> locationTypes = locationTypeStrs.stream()
+                .map(this::convertToLocationType)
+                .toList();
+
         List<MedicineBoxArea> areas = medicineBoxAreaJpaRepository.findAll();
 
         return areas.stream()
-                .filter(area -> area.getLocationType() == locationType)
+                .filter(area -> locationTypes.contains(area.getLocationType()))
                 .map(area -> MedicineBoxAreaResponse.MedicineBoxAreaDetailResponse.builder()
                         .id(area.getId())
                         .name(area.getName())
