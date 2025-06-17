@@ -2,6 +2,7 @@ package com.repill.backend.domain.medicine.controller;
 
 import com.repill.backend.apiPayload.ApiResponse;
 import com.repill.backend.apiPayload.code.status.SuccessStatus;
+import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.global.security.handler.annotation.AuthUser;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
 import com.repill.backend.domain.medicine.dto.MedicineResponse;
@@ -47,7 +48,7 @@ public class MedicineController implements MedicineApi {
     @Override
     public ApiResponse<String> patchMedicine(@PathVariable Long medicineId,
                                              @AuthUser Long memberId,
-                                             @RequestBody MedicineRequest.patchMedicineRequest medicineRequest) {
+                                             @RequestBody PatchMedicineRequest medicineRequest) {
         medicineService.patchMedicine(medicineId, memberId, medicineRequest);
         return ApiResponse.of(SuccessStatus._OK,"MY약 정보 수정이 완료되었습니다.");
     }

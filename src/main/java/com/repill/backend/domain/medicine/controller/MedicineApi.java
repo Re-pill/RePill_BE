@@ -3,6 +3,7 @@ package com.repill.backend.domain.medicine.controller;
 import com.repill.backend.apiPayload.ApiResponse;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
 import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.global.security.handler.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.*;
@@ -54,5 +55,5 @@ public interface MedicineApi {
     @PatchMapping("/{medicineId}")
     ApiResponse<String> patchMedicine(@PathVariable Long medicineId,
                                              @AuthUser Long memberId,
-                                             @RequestBody MedicineRequest.patchMedicineRequest medicineRequest);
+                                             @RequestBody PatchMedicineRequest medicineRequest);
 }
