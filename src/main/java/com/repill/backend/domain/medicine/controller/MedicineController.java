@@ -2,21 +2,23 @@ package com.repill.backend.domain.medicine.controller;
 
 import com.repill.backend.apiPayload.ApiResponse;
 import com.repill.backend.apiPayload.code.status.SuccessStatus;
-import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
-import com.repill.backend.global.security.handler.annotation.AuthUser;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
 import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.domain.medicine.service.MedicineService;
-import io.swagger.v3.oas.annotations.Operation;
+import com.repill.backend.global.security.handler.annotation.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/medicines")
 @Validated
 @RequiredArgsConstructor
-public class MedicineController implements MedicineApi {
+public class MedicineController implements MedicineApiDocs {
 
     private final MedicineService medicineService;
 

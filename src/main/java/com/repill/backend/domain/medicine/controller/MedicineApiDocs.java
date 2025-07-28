@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Medicine API", description = "약품 관련 API")
-public interface MedicineApi {
+public interface MedicineApiDocs {
 
     @Operation(summary = "약품 등록 API", description = "약품 정보를 등록합니다.")
     @ApiResponses(value = {
@@ -39,7 +39,7 @@ public interface MedicineApi {
     @GetMapping("/{medicineId}")
     ApiResponse<MedicineResponse.MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId);
 
-    @Operation(summary = "MY 약 삭제하기 API", description = "My약을 삭제합니다.")
+    @Operation(summary = "MY 약 삭제하기 API", description = "My 약을 삭제합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "약품 삭제 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "약품이 존재하지 않음")
