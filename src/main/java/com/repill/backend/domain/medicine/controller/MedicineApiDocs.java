@@ -1,8 +1,9 @@
 package com.repill.backend.domain.medicine.controller;
 
 import com.repill.backend.apiPayload.ApiResponse;
+import com.repill.backend.domain.medicine.dto.MedicineDetailResponse;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
-import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.dto.MedicineDDayListResponse;
 import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.global.security.handler.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,22 +20,22 @@ public interface MedicineApiDocs {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "약품 등록 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "약품 등록 실패 - 잘못된 요청"),
     })
-    ApiResponse<MedicineResponse.MedicineDetailResponse> createMedicine(@AuthUser Long memberId,
-                                                                        @RequestBody @Validated MedicineRequest request);
+    ApiResponse<MedicineDetailResponse> createMedicine(@AuthUser Long memberId,
+                                                       @RequestBody @Validated MedicineRequest request);
 
     @Operation(summary = "MY 약 D-Day 리스트 조회 API", description = "회원의 폐기되지 않은 약품 D-Day 리스트를 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "D-Day 리스트 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "회원의 약품이 존재하지 않음")
     })
-    ApiResponse<MedicineResponse.MedicineDDayListResponse> getDDayList(@AuthUser Long memberId);
+    ApiResponse<MedicineDDayListResponse> getDDayList(@AuthUser Long memberId);
 
     @Operation(summary = "약품 상세 조회 API", description = "약품의 상세 정보를 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "약품 상세 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "약품이 존재하지 않음")
     })
-    ApiResponse<MedicineResponse.MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId);
+    ApiResponse<MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId);
 
     @Operation(summary = "MY 약 삭제하기 API", description = "My 약을 삭제합니다.")
     @ApiResponses(value = {
