@@ -13,5 +13,4 @@ public interface MedicineJpaRepository extends JpaRepository<Medicine, Long> {
     Optional<Medicine> findMedicineByMemberAndName(Member member, String name);
     List<Medicine> findAllByMemberId(Long memberId);
     void deleteById(Long id);
-    Medicine findById(long id);
 }

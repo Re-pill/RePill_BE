@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface MedicineTypeJpaRepository extends JpaRepository<MedicineType, Long> {
 
     Optional<MedicineType> findMedicineTypeByMedicineTypeName(String medicineTypeName);
-    List<MedicineType> findAll();
 }

@@ -2,9 +2,7 @@ package com.repill.backend.domain.medicine.service;
 
 import com.repill.backend.apiPayload.code.status.ErrorStatus;
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
-import com.repill.backend.domain.medicine.dto.MedicineRequest;
-import com.repill.backend.domain.medicine.dto.MedicineResponse;
-import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
+import com.repill.backend.domain.medicine.dto.*;
 import com.repill.backend.domain.medicine.entity.Medicine;
 import com.repill.backend.domain.medicine.entity.MedicineType;
 import com.repill.backend.domain.medicine.repository.MedicineJpaRepository;
@@ -21,26 +19,27 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class MedicineService {
 
+    private final MemberJpaRepository memberJpaRepository;
     private final MedicineJpaRepository medicineJpaRepository;
-    private final MedicineTypeJpaRepository medicineTypeRepository;
-    private final MemberJpaRepository memberRepository;
+    private final MedicineTypeJpaRepository medicineTypeJpaRepository;
+
 
     @Transactional
-    public MedicineResponse.MedicineDetailResponse createMedicine(Long memberId, MedicineRequest request) {
-        Member member = memberRepository.findById(memberId)
+    public MedicineDetailResponse createMedicine(Long memberId, MedicineRequest request) {
+        Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.medicineTypeName())
+        MedicineType medicineType = medicineTypeJpaRepository.findMedicineTypeByMedicineTypeName(request.medicineTypeName())
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
 
         Medicine medicine = Medicine.create(member, medicineType, request.name(), request.count(), request.expirationDate());
         medicineJpaRepository.save(medicine);
 
-        return MedicineResponse.MedicineDetailResponse.builder()
+        return MedicineDetailResponse.builder()
                 .medicineId(medicine.getId())
                 .medicineTypeName(medicineType.getMedicineTypeName())
                 .name(medicine.getName())
@@ -50,29 +49,29 @@ public class MedicineService {
                 .build();
     }
 
-    public MedicineResponse.MedicineDDayListResponse getDDayList(Long memberId) {
+    public MedicineDDayListResponse getDDayList(Long memberId) {
         List<Medicine> medicineList = medicineJpaRepository.findByMemberIdAndDiscardedFalse(memberId);
 
-        List<MedicineResponse.MedicineDDayResponse> dDayListResponse = medicineList.stream()
+        List<MedicineDDayResponse> dDayListResponse = medicineList.stream()
                 .map(medicine -> {
                     long dDay = ChronoUnit.DAYS.between(LocalDate.now(), medicine.getExpirationDate());
-                    return MedicineResponse.MedicineDDayResponse.builder()
+                    return MedicineDDayResponse.builder()
                             .name(medicine.getName())
                             .expirationDate(medicine.getExpirationDate())
                             .dDay((int) dDay)
                             .build();
                 })
-                .sorted(Comparator.comparingInt(MedicineResponse.MedicineDDayResponse::getDDay))
+                .sorted(Comparator.comparingInt(MedicineDDayResponse::dDay))
                 .toList();
 
-        return new MedicineResponse.MedicineDDayListResponse(dDayListResponse.size(), dDayListResponse);
+        return new MedicineDDayListResponse(dDayListResponse.size(), dDayListResponse);
     }
 
-    public MedicineResponse.MedicineDetailResponse getMedicineDetail(Long medicineId) {
+    public MedicineDetailResponse getMedicineDetail(Long medicineId) {
         Medicine medicine = medicineJpaRepository.findById(medicineId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
 
-        return MedicineResponse.MedicineDetailResponse.builder()
+        return MedicineDetailResponse.builder()
                 .medicineId(medicine.getId())
                 .name(medicine.getName())
                 .count(medicine.getCount())
@@ -88,7 +87,7 @@ public class MedicineService {
     public void deleteMedicine(Long medicineId, Long memberId) {
         Medicine medicine = medicineJpaRepository.findById(medicineId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_NOT_FOUND));
-        Member member = memberRepository.findById(memberId)
+        Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         if (!medicine.getMember().equals(member)) {
@@ -102,14 +101,14 @@ public class MedicineService {
         Medicine medicine = medicineJpaRepository.findById(medicineId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_NOT_FOUND));
 
-        Member member = memberRepository.findById(memberId)
+        Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         if (!medicine.getMember().equals(member)) {
             throw new TestHandler(ErrorStatus.MEDICINE_NOT_MEMBER);
         }
 
-        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.medicineTypeName())
+        MedicineType medicineType = medicineTypeJpaRepository.findMedicineTypeByMedicineTypeName(request.medicineTypeName())
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
 
         medicine.changeMedicineInfo(request, medicineType);

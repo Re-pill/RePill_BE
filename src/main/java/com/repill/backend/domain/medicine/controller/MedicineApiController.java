@@ -2,8 +2,9 @@ package com.repill.backend.domain.medicine.controller;
 
 import com.repill.backend.apiPayload.ApiResponse;
 import com.repill.backend.apiPayload.code.status.SuccessStatus;
+import com.repill.backend.domain.medicine.dto.MedicineDetailResponse;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
-import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.dto.MedicineDDayListResponse;
 import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.domain.medicine.service.MedicineService;
 import com.repill.backend.global.security.handler.annotation.AuthUser;
@@ -22,23 +23,23 @@ MedicineApiController implements MedicineApiDocs {
 
     @Override
     @PostMapping
-    public ApiResponse<MedicineResponse.MedicineDetailResponse> createMedicine(@AuthUser Long memberId,
-                                                                               @RequestBody @Validated MedicineRequest request) {
-        MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(memberId, request);
+    public ApiResponse<MedicineDetailResponse> createMedicine(@AuthUser Long memberId,
+                                                              @RequestBody @Validated MedicineRequest request) {
+        MedicineDetailResponse response = medicineService.createMedicine(memberId, request);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 
     @Override
     @GetMapping("/d-day")
-    public ApiResponse<MedicineResponse.MedicineDDayListResponse> getDDayList(@AuthUser Long memberId) {
-        MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
+    public ApiResponse<MedicineDDayListResponse> getDDayList(@AuthUser Long memberId) {
+        MedicineDDayListResponse response = medicineService.getDDayList(memberId);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 
     @Override
     @GetMapping("/{medicineId}")
-    public ApiResponse<MedicineResponse.MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId) {
-        MedicineResponse.MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
+    public ApiResponse<MedicineDetailResponse> getMedicineDetail(@PathVariable Long medicineId) {
+        MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
         return ApiResponse.of(SuccessStatus._OK, response);
     }
 

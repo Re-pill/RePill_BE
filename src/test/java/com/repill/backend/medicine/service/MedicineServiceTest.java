@@ -1,8 +1,9 @@
 package com.repill.backend.medicine.service;
 
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
+import com.repill.backend.domain.medicine.dto.MedicineDetailResponse;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
-import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.dto.MedicineDDayListResponse;
 import com.repill.backend.domain.medicine.entity.Medicine;
 import com.repill.backend.domain.medicine.entity.MedicineType;
 import com.repill.backend.domain.medicine.repository.MedicineJpaRepository;
@@ -73,15 +74,15 @@ class MedicineServiceTest {
         when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
 
         // when
-        MedicineResponse.MedicineDetailResponse response = medicineService.createMedicine(1L, request);
+        MedicineDetailResponse response = medicineService.createMedicine(1L, request);
 
         // then
         verify(medicineJpaRepository, times(1)).save(medicineCaptor.capture());
         Medicine savedMedicine = medicineCaptor.getValue();
 
-        assertThat(response.getName()).isEqualTo("타이레놀");
-        assertThat(response.getMedicineTypeName()).isEqualTo("알약");
-        assertThat(response.getDiscarded()).isFalse();
+        assertThat(response.name()).isEqualTo("타이레놀");
+        assertThat(response.medicineTypeName()).isEqualTo("알약");
+        assertThat(response.discarded()).isFalse();
         assertThat(savedMedicine.getName()).isEqualTo("타이레놀");
         assertThat(savedMedicine.getCount()).isEqualTo(10);
     }
@@ -118,14 +119,14 @@ class MedicineServiceTest {
         when(medicineJpaRepository.findByMemberIdAndDiscardedFalse(memberId))
                 .thenReturn(List.of(med1, med2));
 
-        MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
+        MedicineDDayListResponse response = medicineService.getDDayList(memberId);
 
-        assertThat(response.getTotalCount()).isEqualTo(2);
-        assertThat(response.getDDayResponseList()).hasSize(2);
-        assertThat(response.getDDayResponseList().get(0).getName()).isEqualTo("어린이시럽");
-        assertThat(response.getDDayResponseList().get(0).getDDay()).isEqualTo(5);
-        assertThat(response.getDDayResponseList().get(1).getName()).isEqualTo("타이레놀");
-        assertThat(response.getDDayResponseList().get(1).getDDay()).isEqualTo(10);
+        assertThat(response.totalCount()).isEqualTo(2);
+        assertThat(response.dDayResponseList()).hasSize(2);
+        assertThat(response.dDayResponseList().get(0).name()).isEqualTo("어린이시럽");
+        assertThat(response.dDayResponseList().get(0).dDay()).isEqualTo(5);
+        assertThat(response.dDayResponseList().get(1).name()).isEqualTo("타이레놀");
+        assertThat(response.dDayResponseList().get(1).dDay()).isEqualTo(10);
     }
 
     @Test
@@ -135,10 +136,10 @@ class MedicineServiceTest {
         when(medicineJpaRepository.findByMemberIdAndDiscardedFalse(memberId))
                 .thenReturn(List.of());
 
-        MedicineResponse.MedicineDDayListResponse response = medicineService.getDDayList(memberId);
+        MedicineDDayListResponse response = medicineService.getDDayList(memberId);
 
-        assertThat(response.getTotalCount()).isZero();
-        assertThat(response.getDDayResponseList()).isEmpty();
+        assertThat(response.totalCount()).isZero();
+        assertThat(response.dDayResponseList()).isEmpty();
     }
 
     @Test
@@ -164,17 +165,17 @@ class MedicineServiceTest {
         when(medicineJpaRepository.findById(medicineId)).thenReturn(Optional.of(medicine));
 
         // when
-        MedicineResponse.MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
+        MedicineDetailResponse response = medicineService.getMedicineDetail(medicineId);
 
         // then
-        assertThat(response.getMedicineId()).isEqualTo(medicineId);
-        assertThat(response.getName()).isEqualTo("타이레놀");
-        assertThat(response.getCount()).isEqualTo(2);
-        assertThat(response.getExpirationDate()).isEqualTo(LocalDate.of(2025, 6, 1));
-        assertThat(response.getDiscarded()).isTrue();
-        assertThat(response.getDiscardedAt()).isEqualTo(LocalDate.of(2025, 5, 15));
-        assertThat(response.getDiscardLocation()).isEqualTo("강릉시 폐의약품 수거함 1번");
-        assertThat(response.getMedicineTypeName()).isEqualTo("알약");
+        assertThat(response.medicineId()).isEqualTo(medicineId);
+        assertThat(response.name()).isEqualTo("타이레놀");
+        assertThat(response.count()).isEqualTo(2);
+        assertThat(response.expirationDate()).isEqualTo(LocalDate.of(2025, 6, 1));
+        assertThat(response.discarded()).isTrue();
+        assertThat(response.discardedAt()).isEqualTo(LocalDate.of(2025, 5, 15));
+        assertThat(response.discardLocation()).isEqualTo("강릉시 폐의약품 수거함 1번");
+        assertThat(response.medicineTypeName()).isEqualTo("알약");
     }
 
     @Test
