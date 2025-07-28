@@ -3,6 +3,7 @@ package com.repill.backend.domain.medicine.entity;
 import com.repill.backend.apiPayload.code.status.ErrorStatus;
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
+import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -74,10 +75,10 @@ public class Medicine {
         }
     }
       
-    public void changeMedicineInfo(MedicineRequest.patchMedicineRequest request, MedicineType medicineType){
-        this.name = request.getName();
+    public void changeMedicineInfo(PatchMedicineRequest request, MedicineType medicineType){
+        this.name = request.name();
         this.medicineType = medicineType;
-        this.count = request.getCount();
-        this.expirationDate = request.getExpirationDate();
+        this.count = request.count();
+        this.expirationDate = request.expirationDate();
     }
 }

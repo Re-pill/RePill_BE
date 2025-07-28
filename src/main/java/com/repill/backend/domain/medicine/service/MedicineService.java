@@ -4,6 +4,7 @@ import com.repill.backend.apiPayload.code.status.ErrorStatus;
 import com.repill.backend.apiPayload.exception.handler.TestHandler;
 import com.repill.backend.domain.medicine.dto.MedicineRequest;
 import com.repill.backend.domain.medicine.dto.MedicineResponse;
+import com.repill.backend.domain.medicine.dto.PatchMedicineRequest;
 import com.repill.backend.domain.medicine.entity.Medicine;
 import com.repill.backend.domain.medicine.entity.MedicineType;
 import com.repill.backend.domain.medicine.repository.MedicineJpaRepository;
@@ -33,10 +34,10 @@ public class MedicineService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
-        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.getMedicineTypeName())
+        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.medicineTypeName())
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
 
-        Medicine medicine = Medicine.create(member, medicineType, request.getName(), request.getCount(), request.getExpirationDate());
+        Medicine medicine = Medicine.create(member, medicineType, request.name(), request.count(), request.expirationDate());
         medicineJpaRepository.save(medicine);
 
         return MedicineResponse.MedicineDetailResponse.builder()
@@ -97,16 +98,20 @@ public class MedicineService {
     }
 
     @Transactional
-    public void patchMedicine(Long medicineId, Long memberId, MedicineRequest.patchMedicineRequest request) {
+    public void patchMedicine(Long medicineId, Long memberId, PatchMedicineRequest request) {
         Medicine medicine = medicineJpaRepository.findById(medicineId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_NOT_FOUND));
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
         if (!medicine.getMember().equals(member)) {
             throw new TestHandler(ErrorStatus.MEDICINE_NOT_MEMBER);
         }
-        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.getMedicineTypeName())
+
+        MedicineType medicineType = medicineTypeRepository.findMedicineTypeByMedicineTypeName(request.medicineTypeName())
                 .orElseThrow(() -> new TestHandler(ErrorStatus.MEDICINE_TYPE_NOT_FOUND));
+
         medicine.changeMedicineInfo(request, medicineType);
     }
 }
